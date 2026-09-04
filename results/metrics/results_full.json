@@ -1,0 +1,608 @@
+{
+  "generated_at": "2026-09-04T01:55:25.961953+00:00",
+  "tag": "full",
+  "dataset": {
+    "name": "CUHK-PEDES",
+    "annotation_file": "/mnt/data/lab_datasets/CUHK-PEDES/reid_raw.json",
+    "split": "test",
+    "n_images": 3074,
+    "n_captions": 6156,
+    "n_identities": 1000
+  },
+  "environment": {
+    "python": "3.12.3",
+    "platform": "Linux-7.0.0-30-generic-x86_64-with-glibc2.39"
+  },
+  "config": {
+    "image_batch_size": 64,
+    "text_batch_size": 256,
+    "warmup_batches": 3,
+    "reference_dtype": "fp32"
+  },
+  "results": [
+    {
+      "model": "ViT-B/32",
+      "dtype": "fp32",
+      "R@1": 5.929174788823912,
+      "R@5": 14.8635477582846,
+      "R@10": 21.150097465886937,
+      "mAP": 5.775847058697442,
+      "image_throughput_per_second": 1631.6131354541567,
+      "text_throughput_per_second": 2172.923583743801,
+      "image_peak_vram_bytes": 819543552,
+      "text_peak_vram_bytes": 1268832768,
+      "image_wall_seconds": 8.522148377029225,
+      "text_wall_seconds": 3.295955879963003,
+      "parameter_bytes": 605109252,
+      "captions_truncated": 15,
+      "captions_total": 6156,
+      "parameter_dtypes": {
+        "float32": 151277313
+      },
+      "torch_version": "2.11.0+cu128",
+      "cuda_device": "NVIDIA GeForce RTX 5070 Ti"
+    },
+    {
+      "model": "ViT-B/32",
+      "dtype": "fp16",
+      "R@1": 5.994152046783626,
+      "R@5": 14.896036387264457,
+      "R@10": 21.21507472384665,
+      "mAP": 5.783788768638591,
+      "image_throughput_per_second": 2985.1325431285527,
+      "text_throughput_per_second": 5508.635019235172,
+      "image_peak_vram_bytes": 475268608,
+      "text_peak_vram_bytes": 705853952,
+      "image_wall_seconds": 3.74441929301247,
+      "text_wall_seconds": 1.5159418809926137,
+      "parameter_bytes": 353436676,
+      "captions_truncated": 15,
+      "captions_total": 6156,
+      "parameter_dtypes": {
+        "float32": 25441025,
+        "float16": 125836288
+      },
+      "torch_version": "2.11.0+cu128",
+      "cuda_device": "NVIDIA GeForce RTX 5070 Ti",
+      "image_drift": {
+        "cosine_mean": 0.9999963728926166,
+        "cosine_min": 0.9971208192056301,
+        "cosine_p1": 0.9999886454207068,
+        "cosine_std": 5.263975164170823e-05,
+        "cosine_percentiles": {
+          "p0": 0.9971208192056301,
+          "p1": 0.9999886454207068,
+          "p5": 0.9999940329829794,
+          "p25": 0.999997166573908,
+          "p50": 0.999998083840119,
+          "p75": 0.9999986732270552,
+          "p95": 0.9999991580826257,
+          "p99": 0.999999340722755,
+          "p100": 0.9999996521425945
+        }
+      },
+      "text_drift": {
+        "cosine_mean": 0.9999990962835864,
+        "cosine_min": 0.9999909104889483,
+        "cosine_p1": 0.9999974245422117,
+        "cosine_std": 4.3669772506155086e-07,
+        "cosine_percentiles": {
+          "p0": 0.9999909104889483,
+          "p1": 0.9999974245422117,
+          "p5": 0.9999983220841151,
+          "p25": 0.999998943272578,
+          "p50": 0.9999991925824696,
+          "p75": 0.9999993645725785,
+          "p95": 0.999999562967678,
+          "p99": 0.9999996598429634,
+          "p100": 0.9999997933328675
+        }
+      },
+      "top1_agreement_pct": 99.07407407407408,
+      "top10_overlap_pct": 99.27387914230019,
+      "kendall_tau_mean": 0.9972519278526306,
+      "kendall_tau_min": 0.9957932233810425,
+      "kendall_tau_n_queries": 500
+    },
+    {
+      "model": "ViT-B/32",
+      "dtype": "bf16",
+      "R@1": 6.042884990253411,
+      "R@5": 15.107212475633528,
+      "R@10": 21.296296296296298,
+      "mAP": 5.83256346028602,
+      "image_throughput_per_second": 3074.062352961527,
+      "text_throughput_per_second": 5389.696249814009,
+      "image_peak_vram_bytes": 480839168,
+      "text_peak_vram_bytes": 711621120,
+      "image_wall_seconds": 3.3463054910534993,
+      "text_wall_seconds": 1.2947163459612057,
+      "parameter_bytes": 353436676,
+      "captions_truncated": 15,
+      "captions_total": 6156,
+      "parameter_dtypes": {
+        "float32": 25441025,
+        "bfloat16": 125836288
+      },
+      "torch_version": "2.11.0+cu128",
+      "cuda_device": "NVIDIA GeForce RTX 5070 Ti",
+      "image_drift": {
+        "cosine_mean": 0.9997081394808612,
+        "cosine_min": 0.9947486156938707,
+        "cosine_p1": 0.9986318566887071,
+        "cosine_std": 0.00027304575107787104,
+        "cosine_percentiles": {
+          "p0": 0.9947486156938707,
+          "p1": 0.9986318566887071,
+          "p5": 0.9992407670725661,
+          "p25": 0.999658278605598,
+          "p50": 0.9997866544750873,
+          "p75": 0.99986172258558,
+          "p95": 0.9999183860323697,
+          "p99": 0.9999388674837569,
+          "p100": 0.999962201740843
+        }
+      },
+      "text_drift": {
+        "cosine_mean": 0.9999302538991335,
+        "cosine_min": 0.999384729071124,
+        "cosine_p1": 0.9997796233249013,
+        "cosine_std": 3.8171857613255854e-05,
+        "cosine_percentiles": {
+          "p0": 0.999384729071124,
+          "p1": 0.9997796233249013,
+          "p5": 0.9998617643150305,
+          "p25": 0.9999192430391299,
+          "p50": 0.9999390846805949,
+          "p75": 0.9999528019706987,
+          "p95": 0.999969712475221,
+          "p99": 0.9999762232279538,
+          "p100": 0.9999834099542714
+        }
+      },
+      "top1_agreement_pct": 89.44119558154647,
+      "top10_overlap_pct": 93.0669265756985,
+      "kendall_tau_mean": 0.9721122980117798,
+      "kendall_tau_min": 0.9564390778541565,
+      "kendall_tau_n_queries": 500
+    },
+    {
+      "model": "ViT-B/16",
+      "dtype": "fp32",
+      "R@1": 8.073424301494477,
+      "R@5": 19.91552956465237,
+      "R@10": 27.29044834307992,
+      "mAP": 8.29620147808376,
+      "image_throughput_per_second": 415.95749039455734,
+      "text_throughput_per_second": 2175.0942648605223,
+      "image_peak_vram_bytes": 1274159616,
+      "text_peak_vram_bytes": 1261813248,
+      "image_wall_seconds": 9.032878076075576,
+      "text_wall_seconds": 3.200960115995258,
+      "parameter_bytes": 598482948,
+      "captions_truncated": 15,
+      "captions_total": 6156,
+      "parameter_dtypes": {
+        "float32": 149620737
+      },
+      "torch_version": "2.11.0+cu128",
+      "cuda_device": "NVIDIA GeForce RTX 5070 Ti"
+    },
+    {
+      "model": "ViT-B/16",
+      "dtype": "fp16",
+      "R@1": 8.105912930474334,
+      "R@5": 19.948018193632226,
+      "R@10": 27.371669915529566,
+      "mAP": 8.3064521968028,
+      "image_throughput_per_second": 1175.1299999876665,
+      "text_throughput_per_second": 5519.309932499829,
+      "image_peak_vram_bytes": 710470144,
+      "text_peak_vram_bytes": 710499840,
+      "image_wall_seconds": 4.108409244916402,
+      "text_wall_seconds": 1.2670356889721006,
+      "parameter_bytes": 350349316,
+      "captions_truncated": 15,
+      "captions_total": 6156,
+      "parameter_dtypes": {
+        "float32": 25553921,
+        "float16": 124066816
+      },
+      "torch_version": "2.11.0+cu128",
+      "cuda_device": "NVIDIA GeForce RTX 5070 Ti",
+      "image_drift": {
+        "cosine_mean": 0.999997024347238,
+        "cosine_min": 0.9995629828196388,
+        "cosine_p1": 0.9999830547605987,
+        "cosine_std": 1.2950925947427234e-05,
+        "cosine_percentiles": {
+          "p0": 0.9995629828196388,
+          "p1": 0.9999830547605987,
+          "p5": 0.9999940568553253,
+          "p25": 0.999997341322737,
+          "p50": 0.9999983086051841,
+          "p75": 0.9999988430324632,
+          "p95": 0.9999992854808135,
+          "p99": 0.9999994701292568,
+          "p100": 0.9999996540022823
+        }
+      },
+      "text_drift": {
+        "cosine_mean": 0.9999993225266287,
+        "cosine_min": 0.9999943816124566,
+        "cosine_p1": 0.9999981661703811,
+        "cosine_std": 2.960145107977199e-07,
+        "cosine_percentiles": {
+          "p0": 0.9999943816124566,
+          "p1": 0.9999981661703811,
+          "p5": 0.9999988272790739,
+          "p25": 0.9999992409286751,
+          "p50": 0.9999993831502695,
+          "p75": 0.9999994935582537,
+          "p95": 0.9999996249583145,
+          "p99": 0.9999996995640308,
+          "p100": 0.9999997911238911
+        }
+      },
+      "top1_agreement_pct": 99.04158544509421,
+      "top10_overlap_pct": 99.26413255360623,
+      "kendall_tau_mean": 0.9971613883972168,
+      "kendall_tau_min": 0.9958464503288269,
+      "kendall_tau_n_queries": 500
+    },
+    {
+      "model": "ViT-B/16",
+      "dtype": "bf16",
+      "R@1": 8.36582196231319,
+      "R@5": 20.126705653021443,
+      "R@10": 27.42040285899935,
+      "mAP": 8.396880845760144,
+      "image_throughput_per_second": 1145.455527094768,
+      "text_throughput_per_second": 5415.8364368590455,
+      "image_peak_vram_bytes": 710470144,
+      "text_peak_vram_bytes": 710499840,
+      "image_wall_seconds": 3.983986970037222,
+      "text_wall_seconds": 1.2893194539938122,
+      "parameter_bytes": 350349316,
+      "captions_truncated": 15,
+      "captions_total": 6156,
+      "parameter_dtypes": {
+        "float32": 25553921,
+        "bfloat16": 124066816
+      },
+      "torch_version": "2.11.0+cu128",
+      "cuda_device": "NVIDIA GeForce RTX 5070 Ti",
+      "image_drift": {
+        "cosine_mean": 0.99961783038998,
+        "cosine_min": 0.9905635572747505,
+        "cosine_p1": 0.9980180982102312,
+        "cosine_std": 0.00043227842159320395,
+        "cosine_percentiles": {
+          "p0": 0.9905635572747505,
+          "p1": 0.9980180982102312,
+          "p5": 0.9989599788610602,
+          "p25": 0.9995505454518704,
+          "p50": 0.9997367660942655,
+          "p75": 0.9998459279170152,
+          "p95": 0.9999180720589114,
+          "p99": 0.9999442454022993,
+          "p100": 0.9999631081394139
+        }
+      },
+      "text_drift": {
+        "cosine_mean": 0.999942728123653,
+        "cosine_min": 0.9996591727670904,
+        "cosine_p1": 0.999865657404029,
+        "cosine_std": 2.1296963951327303e-05,
+        "cosine_percentiles": {
+          "p0": 0.9996591727670904,
+          "p1": 0.999865657404029,
+          "p5": 0.999905940177717,
+          "p25": 0.9999340169993345,
+          "p50": 0.999946194910234,
+          "p75": 0.9999561600650471,
+          "p95": 0.9999683730760771,
+          "p99": 0.999974731434666,
+          "p100": 0.9999851349480449
+        }
+      },
+      "top1_agreement_pct": 88.51526965562053,
+      "top10_overlap_pct": 92.88011695906432,
+      "kendall_tau_mean": 0.9684833884239197,
+      "kendall_tau_min": 0.9497573971748352,
+      "kendall_tau_n_queries": 500
+    },
+    {
+      "model": "ViT-L/14",
+      "dtype": "fp32",
+      "R@1": 10.12020792722547,
+      "R@5": 22.660818713450293,
+      "R@10": 31.140350877192986,
+      "mAP": 9.408628158042106,
+      "image_throughput_per_second": 100.88645936967144,
+      "text_throughput_per_second": 1099.5652607209395,
+      "image_peak_vram_bytes": 2841867776,
+      "text_peak_vram_bytes": 2692092416,
+      "image_wall_seconds": 35.07386945793405,
+      "text_wall_seconds": 6.333857219899073,
+      "parameter_bytes": 1710466052,
+      "captions_truncated": 15,
+      "captions_total": 6156,
+      "parameter_dtypes": {
+        "float32": 427616513
+      },
+      "torch_version": "2.11.0+cu128",
+      "cuda_device": "NVIDIA GeForce RTX 5070 Ti"
+    },
+    {
+      "model": "ViT-L/14",
+      "dtype": "fp16",
+      "R@1": 10.087719298245613,
+      "R@5": 22.660818713450293,
+      "R@10": 31.189083820662766,
+      "mAP": 9.408867945463834,
+      "image_throughput_per_second": 282.1306881539266,
+      "text_throughput_per_second": 2973.6506380438173,
+      "image_peak_vram_bytes": 1512115712,
+      "text_peak_vram_bytes": 1438843392,
+      "image_wall_seconds": 12.993597673950717,
+      "text_wall_seconds": 2.379851801902987,
+      "parameter_bytes": 932051972,
+      "captions_truncated": 15,
+      "captions_total": 6156,
+      "parameter_dtypes": {
+        "float32": 38409473,
+        "float16": 389207040
+      },
+      "torch_version": "2.11.0+cu128",
+      "cuda_device": "NVIDIA GeForce RTX 5070 Ti",
+      "image_drift": {
+        "cosine_mean": 0.9999926220881228,
+        "cosine_min": 0.9996871526784353,
+        "cosine_p1": 0.9999522434150825,
+        "cosine_std": 1.1866510245268019e-05,
+        "cosine_percentiles": {
+          "p0": 0.9996871526784353,
+          "p1": 0.9999522434150825,
+          "p5": 0.9999774643266338,
+          "p25": 0.9999920025420542,
+          "p50": 0.9999956547235598,
+          "p75": 0.9999975746268911,
+          "p95": 0.9999987529489246,
+          "p99": 0.9999991712334751,
+          "p100": 0.9999994567215
+        }
+      },
+      "text_drift": {
+        "cosine_mean": 0.9999992899205842,
+        "cosine_min": 0.9999967059295516,
+        "cosine_p1": 0.999998254425329,
+        "cosine_std": 2.7206967516107143e-07,
+        "cosine_percentiles": {
+          "p0": 0.9999967059295516,
+          "p1": 0.999998254425329,
+          "p5": 0.9999987854919515,
+          "p25": 0.9999992055821452,
+          "p50": 0.9999993499682286,
+          "p75": 0.9999994604417579,
+          "p95": 0.9999995678464264,
+          "p99": 0.9999996335432423,
+          "p100": 0.9999998044615979
+        }
+      },
+      "top1_agreement_pct": 98.89538661468485,
+      "top10_overlap_pct": 98.94574398960364,
+      "kendall_tau_mean": 0.9966198801994324,
+      "kendall_tau_min": 0.9944959878921509,
+      "kendall_tau_n_queries": 500
+    },
+    {
+      "model": "ViT-L/14",
+      "dtype": "bf16",
+      "R@1": 10.00649772579597,
+      "R@5": 22.82326185834958,
+      "R@10": 30.994152046783626,
+      "mAP": 9.443853261764472,
+      "image_throughput_per_second": 279.39210696183807,
+      "text_throughput_per_second": 2972.7598065192105,
+      "image_peak_vram_bytes": 1512115712,
+      "text_peak_vram_bytes": 1438843392,
+      "image_wall_seconds": 13.040955487987958,
+      "text_wall_seconds": 2.3541621130425483,
+      "parameter_bytes": 932051972,
+      "captions_truncated": 15,
+      "captions_total": 6156,
+      "parameter_dtypes": {
+        "float32": 38409473,
+        "bfloat16": 389207040
+      },
+      "torch_version": "2.11.0+cu128",
+      "cuda_device": "NVIDIA GeForce RTX 5070 Ti",
+      "image_drift": {
+        "cosine_mean": 0.9996726032900426,
+        "cosine_min": 0.9922807941924033,
+        "cosine_p1": 0.9984165539609057,
+        "cosine_std": 0.00035073106023472813,
+        "cosine_percentiles": {
+          "p0": 0.9922807941924033,
+          "p1": 0.9984165539609057,
+          "p5": 0.9991581179662177,
+          "p25": 0.9996188584438206,
+          "p50": 0.9997686108196185,
+          "p75": 0.9998486063672145,
+          "p95": 0.9999161273819884,
+          "p99": 0.9999434628148266,
+          "p100": 0.9999626406587863
+        }
+      },
+      "text_drift": {
+        "cosine_mean": 0.9999436415406125,
+        "cosine_min": 0.9997393183830605,
+        "cosine_p1": 0.9998525462254353,
+        "cosine_std": 2.259857915845408e-05,
+        "cosine_percentiles": {
+          "p0": 0.9997393183830605,
+          "p1": 0.9998525462254353,
+          "p5": 0.9999057217853431,
+          "p25": 0.9999371985504426,
+          "p50": 0.9999486820444385,
+          "p75": 0.9999570092987795,
+          "p95": 0.9999655523442754,
+          "p99": 0.999971420506375,
+          "p100": 0.9999818944591152
+        }
+      },
+      "top1_agreement_pct": 89.91228070175438,
+      "top10_overlap_pct": 92.33105912930475,
+      "kendall_tau_mean": 0.9728465676307678,
+      "kendall_tau_min": 0.9530451893806458,
+      "kendall_tau_n_queries": 500
+    },
+    {
+      "model": "RN50",
+      "dtype": "fp32",
+      "R@1": 4.889538661468486,
+      "R@5": 13.352826510721247,
+      "R@10": 18.680961663417804,
+      "mAP": 5.22378105070989,
+      "image_throughput_per_second": 1220.9723490376853,
+      "text_throughput_per_second": 2185.933963855987,
+      "image_peak_vram_bytes": 1185275392,
+      "text_peak_vram_bytes": 1074493952,
+      "image_wall_seconds": 6.37923070800025,
+      "text_wall_seconds": 3.1840595779940486,
+      "parameter_bytes": 408028548,
+      "captions_truncated": 15,
+      "captions_total": 6156,
+      "parameter_dtypes": {
+        "float32": 102007137
+      },
+      "torch_version": "2.11.0+cu128",
+      "cuda_device": "NVIDIA GeForce RTX 5070 Ti"
+    },
+    {
+      "model": "RN50",
+      "dtype": "fp16",
+      "R@1": 4.8408057179987,
+      "R@5": 13.32033788174139,
+      "R@10": 18.648473034437945,
+      "mAP": 5.2100018754623525,
+      "image_throughput_per_second": 2293.2222198640206,
+      "text_throughput_per_second": 5522.575370793599,
+      "image_peak_vram_bytes": 650352640,
+      "text_peak_vram_bytes": 597363712,
+      "image_wall_seconds": 3.780736095039174,
+      "text_wall_seconds": 1.2723419410176575,
+      "parameter_bytes": 255049412,
+      "captions_truncated": 15,
+      "captions_total": 6156,
+      "parameter_dtypes": {
+        "float32": 25517569,
+        "float16": 76489568
+      },
+      "torch_version": "2.11.0+cu128",
+      "cuda_device": "NVIDIA GeForce RTX 5070 Ti",
+      "image_drift": {
+        "cosine_mean": 0.9999898055868979,
+        "cosine_min": 0.999657107885577,
+        "cosine_p1": 0.9999652418804591,
+        "cosine_std": 1.242789464814473e-05,
+        "cosine_percentiles": {
+          "p0": 0.999657107885577,
+          "p1": 0.9999652418804591,
+          "p5": 0.9999800113040032,
+          "p25": 0.9999885400083753,
+          "p50": 0.999991727293638,
+          "p75": 0.9999938703866403,
+          "p95": 0.9999958554678023,
+          "p99": 0.9999968865788502,
+          "p100": 0.9999981416916838
+        }
+      },
+      "text_drift": {
+        "cosine_mean": 0.999998587942565,
+        "cosine_min": 0.9999917333474007,
+        "cosine_p1": 0.9999963364716498,
+        "cosine_std": 6.290367710069994e-07,
+        "cosine_percentiles": {
+          "p0": 0.9999917333474007,
+          "p1": 0.9999963364716498,
+          "p5": 0.9999974699043,
+          "p25": 0.999998334975153,
+          "p50": 0.9999987218430504,
+          "p75": 0.9999989929644423,
+          "p95": 0.9999992975061023,
+          "p99": 0.9999994568026933,
+          "p100": 0.999999739634319
+        }
+      },
+      "top1_agreement_pct": 98.76543209876543,
+      "top10_overlap_pct": 98.71182586094866,
+      "kendall_tau_mean": 0.9949168562889099,
+      "kendall_tau_min": 0.9923163056373596,
+      "kendall_tau_n_queries": 500
+    },
+    {
+      "model": "RN50",
+      "dtype": "bf16",
+      "R@1": 4.808317089018843,
+      "R@5": 12.849252761533464,
+      "R@10": 18.37231968810916,
+      "mAP": 5.138530685887238,
+      "image_throughput_per_second": 2127.132634727166,
+      "text_throughput_per_second": 5409.397116735485,
+      "image_peak_vram_bytes": 650354688,
+      "text_peak_vram_bytes": 597363712,
+      "image_wall_seconds": 3.6660230200504884,
+      "text_wall_seconds": 1.2951695239171386,
+      "parameter_bytes": 255049412,
+      "captions_truncated": 15,
+      "captions_total": 6156,
+      "parameter_dtypes": {
+        "float32": 25517569,
+        "bfloat16": 76489568
+      },
+      "torch_version": "2.11.0+cu128",
+      "cuda_device": "NVIDIA GeForce RTX 5070 Ti",
+      "image_drift": {
+        "cosine_mean": 0.9973607814235307,
+        "cosine_min": 0.9706702823552582,
+        "cosine_p1": 0.9892690410609589,
+        "cosine_std": 0.0019919679236699473,
+        "cosine_percentiles": {
+          "p0": 0.9706702823552582,
+          "p1": 0.9892690410609589,
+          "p5": 0.993584145510794,
+          "p25": 0.9969183596938003,
+          "p50": 0.9979273035274849,
+          "p75": 0.9985359266642337,
+          "p95": 0.9990343367080792,
+          "p99": 0.9992933364232511,
+          "p100": 0.999492500786416
+        }
+      },
+      "text_drift": {
+        "cosine_mean": 0.99987849890834,
+        "cosine_min": 0.9990153789998867,
+        "cosine_p1": 0.9996640327296207,
+        "cosine_std": 5.7677263269389555e-05,
+        "cosine_percentiles": {
+          "p0": 0.9990153789998867,
+          "p1": 0.9996640327296207,
+          "p5": 0.9997731847001374,
+          "p25": 0.9998583273261995,
+          "p50": 0.9998907335999598,
+          "p75": 0.9999155859631661,
+          "p95": 0.9999413550959386,
+          "p99": 0.9999558871874598,
+          "p100": 0.9999777759940007
+        }
+      },
+      "top1_agreement_pct": 76.86809616634179,
+      "top10_overlap_pct": 83.46491228070174,
+      "kendall_tau_mean": 0.9164661765098572,
+      "kendall_tau_min": 0.8749361634254456,
+      "kendall_tau_n_queries": 500
+    }
+  ]
+}

@@ -89,6 +89,8 @@ def cmd_eval(args) -> int:
                 "captions_truncated",
                 "captions_total",
                 "parameter_dtypes",
+                "torch_version",
+                "cuda_device",
             ):
                 row[key] = cached["stats"].get(key)
 

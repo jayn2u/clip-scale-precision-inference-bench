@@ -1,0 +1,206 @@
+<title>Precision Without Consequence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  --paper:#f6f7f9; --surface:#ffffff; --ink:#131820; --ink-soft:#3d4552;
+  --muted:#69707d; --rule:#dfe3e9; --rule-soft:#eceff3;
+  --fp32:#3a6ea5; --fp16:#2e7d63; --bf16:#b4552f;
+  --flag:#b4552f; --flag-bg:rgba(180,85,47,.09);
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#101318; --surface:#171b22; --ink:#e6e9ee; --ink-soft:#bcc3cd;
+  --muted:#8b93a1; --rule:#272d37; --rule-soft:#1e232b;
+  --fp32:#7aa9d8; --fp16:#5fb495; --bf16:#e08a5e;
+  --flag:#e08a5e; --flag-bg:rgba(224,138,94,.12);
+}}
+:root[data-theme="dark"]{
+  --paper:#101318; --surface:#171b22; --ink:#e6e9ee; --ink-soft:#bcc3cd;
+  --muted:#8b93a1; --rule:#272d37; --rule-soft:#1e232b;
+  --fp32:#7aa9d8; --fp16:#5fb495; --bf16:#e08a5e;
+  --flag:#e08a5e; --flag-bg:rgba(224,138,94,.12);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font:16px/1.62 "IBM Plex Sans","Helvetica Neue",Arial,sans-serif;
+  -webkit-font-smoothing:antialiased}
+.wrap{max-width:1000px;margin:0 auto;padding:56px 28px 110px}
+.col{max-width:66ch}
+h1{font-family:Newsreader,Georgia,"Times New Roman",serif;font-weight:500;
+  font-size:clamp(30px,4.4vw,46px);line-height:1.12;letter-spacing:-.015em;
+  margin:0 0 18px;text-wrap:balance;max-width:19ch}
+h2{font-family:Newsreader,Georgia,serif;font-weight:500;font-size:26px;
+  line-height:1.2;letter-spacing:-.01em;margin:0 0 10px;text-wrap:balance}
+h3{font-size:12px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--muted);margin:0 0 10px}
+p{margin:0 0 14px;color:var(--ink-soft)}
+.lede{font-size:19px;line-height:1.55;color:var(--ink);max-width:60ch}
+.eyebrow{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:11.5px;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:0 0 20px}
+section{margin:0;padding:44px 0 0;border-top:1px solid var(--rule);margin-top:44px}
+section.open{border-top:none;margin-top:0;padding-top:0}
+.figure{margin:22px 0 8px}
+.figure svg{width:100%;height:auto;display:block}
+.cap{font-size:13.5px;color:var(--muted);margin:8px 0 0;max-width:70ch}
+.panel{background:var(--surface);border:1px solid var(--rule);padding:20px 22px}
+.finding{background:var(--flag-bg);border-left:3px solid var(--flag);
+  padding:16px 20px;margin:22px 0}
+.finding p{margin:0;color:var(--ink)}
+.legend{display:flex;gap:20px;flex-wrap:wrap;font-family:"IBM Plex Mono",monospace;
+  font-size:12px;color:var(--muted);margin:0 0 6px}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.sw{width:10px;height:10px;display:inline-block}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:600px;
+  font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:12.5px;
+  font-variant-numeric:tabular-nums}
+th,td{text-align:right;padding:7px 12px;white-space:nowrap}
+th:first-child,td:first-child,th:nth-child(2),td:nth-child(2){text-align:left}
+thead th{font-family:"IBM Plex Sans",sans-serif;font-size:10.5px;font-weight:600;
+  letter-spacing:.07em;text-transform:uppercase;color:var(--muted);
+  border-bottom:1px solid var(--rule);padding-bottom:8px}
+tbody td{border-bottom:1px solid var(--rule-soft)}
+tbody tr:last-child td{border-bottom:none}
+tr.ref td{color:var(--muted)}
+tr.group-start td{border-top:1px solid var(--rule)}
+.dt{font-weight:600}
+.bar{display:inline-block;height:9px;vertical-align:middle;margin-right:7px}
+.barcell{text-align:right;white-space:nowrap}
+dl{display:grid;grid-template-columns:auto 1fr;gap:9px 22px;margin:0;font-size:14px}
+dt{color:var(--muted);white-space:nowrap}
+dd{margin:0;color:var(--ink-soft)}
+code{font-family:"IBM Plex Mono",monospace;font-size:.9em;
+  background:var(--rule-soft);padding:1px 5px}
+.grid{stroke:var(--rule-soft);stroke-width:1}
+.axisline{stroke:var(--rule);stroke-width:1}
+.trace{stroke:var(--muted);stroke-width:1;stroke-opacity:.45;stroke-dasharray:3 3}
+text{font-family:"IBM Plex Sans",sans-serif;fill:var(--ink)}
+.tick{font-family:"IBM Plex Mono",monospace;font-size:10px;fill:var(--muted)}
+.axis{font-size:11.5px;fill:var(--muted)}
+.barlabel{font-family:"IBM Plex Mono",monospace;font-size:9.5px;fill:var(--muted)}
+.pointlabel{font-family:"IBM Plex Mono",monospace;font-size:10.5px;fill:var(--muted)}
+.rowlabel{font-family:"IBM Plex Mono",monospace;font-size:11.5px;fill:var(--ink-soft)}
+.bitname{font-family:"IBM Plex Mono",monospace;font-size:13px;font-weight:600}
+.bitcell{font-family:"IBM Plex Mono",monospace;font-size:10.5px;fill:var(--surface);font-weight:600}
+.bitnote{font-family:"IBM Plex Mono",monospace;font-size:11px;fill:var(--muted)}
+.bitlegend{font-size:11px;fill:var(--muted)}
+.foot{font-size:13px;color:var(--muted);max-width:70ch}
+@media (max-width:640px){.wrap{padding:36px 18px 80px}}
+</style>
+<div class="wrap">
+
+<section class="open">
+<p class="eyebrow">CLIP &#183; CUHK-PEDES &#183; text&#8594;image retrieval &#183; RTX 5070 Ti</p>
+<h1>Precision without consequence &mdash; until you look at the ranking</h1>
+<p class="lede">Casting 4 zero-shot CLIP models from fp32 to fp16 or bf16 moves Recall@1 by at most
+0.29 points across all 8 comparisons. Every aggregate metric says the precisions are
+interchangeable. They are not: bf16 hands back a different top result for roughly
+14% of queries.</p>
+
+<div class="finding">
+<p><strong>fp16 is free.</strong> 1.8&ndash;2.8&#215; the image-encoding throughput,
+roughly half the weight memory, 98.8% of queries still returning the same top image.
+<strong>bf16 is not.</strong> Same 16 bits, same speed, but 77&ndash;90% top-1
+agreement &mdash; and R@1 never reveals it.</p>
+</div>
+</section>
+
+<section>
+<div class="col">
+<h2>The cause is three bits</h2>
+<p>fp16 and bf16 are both 16 bits wide, so they cost the same memory and run on the same
+tensor cores. They spend those bits differently: bf16 keeps fp32's full 8-bit exponent &mdash;
+its reason for existing, since that range is what makes training stable &mdash; and pays for
+it out of the mantissa.</p>
+</div>
+<div class="figure"><svg viewBox="0 0 720 178" role="img" aria-label="Sign, exponent and mantissa bit widths of fp32, fp16 and bf16"><text x="62" y="49" class="bitname" text-anchor="end" fill="#3a6ea5">fp32</text><rect x="74.0" y="34" width="19.7" height="24" fill="#3a6ea5" fill-opacity="0.9" stroke="#3a6ea5" stroke-opacity="0.5" ><title>fp32 sign: 1 bits</title></rect><rect x="93.7" y="34" width="157.5" height="24" fill="#3a6ea5" fill-opacity="0.42" stroke="#3a6ea5" stroke-opacity="0.5" ><title>fp32 exponent: 8 bits</title></rect><text x="172.4" y="50" class="bitcell" text-anchor="middle">8</text><rect x="251.2" y="34" width="452.8" height="24" fill="#3a6ea5" fill-opacity="0.16" stroke="#3a6ea5" stroke-opacity="0.5" ><title>fp32 mantissa: 23 bits</title></rect><text x="477.6" y="50" class="bitcell" text-anchor="middle">23</text><text x="712.0" y="50" class="bitnote">32 bits &#183; 23 mantissa</text><text x="62" y="93" class="bitname" text-anchor="end" fill="#2e7d63">fp16</text><rect x="74.0" y="78" width="19.7" height="24" fill="#2e7d63" fill-opacity="0.9" stroke="#2e7d63" stroke-opacity="0.5" ><title>fp16 sign: 1 bits</title></rect><rect x="93.7" y="78" width="98.4" height="24" fill="#2e7d63" fill-opacity="0.42" stroke="#2e7d63" stroke-opacity="0.5" ><title>fp16 exponent: 5 bits</title></rect><text x="142.9" y="94" class="bitcell" text-anchor="middle">5</text><rect x="192.1" y="78" width="196.9" height="24" fill="#2e7d63" fill-opacity="0.16" stroke="#2e7d63" stroke-opacity="0.5" ><title>fp16 mantissa: 10 bits</title></rect><text x="290.6" y="94" class="bitcell" text-anchor="middle">10</text><text x="397.0" y="94" class="bitnote">16 bits &#183; 10 mantissa</text><text x="62" y="137" class="bitname" text-anchor="end" fill="#b4552f">bf16</text><rect x="74.0" y="122" width="19.7" height="24" fill="#b4552f" fill-opacity="0.9" stroke="#b4552f" stroke-opacity="0.5" ><title>bf16 sign: 1 bits</title></rect><rect x="93.7" y="122" width="157.5" height="24" fill="#b4552f" fill-opacity="0.42" stroke="#b4552f" stroke-opacity="0.5" ><title>bf16 exponent: 8 bits</title></rect><text x="172.4" y="138" class="bitcell" text-anchor="middle">8</text><rect x="251.2" y="122" width="137.8" height="24" fill="#b4552f" fill-opacity="0.16" stroke="#b4552f" stroke-opacity="0.5" ><title>bf16 mantissa: 7 bits</title></rect><text x="320.1" y="138" class="bitcell" text-anchor="middle">7</text><text x="397.0" y="138" class="bitnote">16 bits &#183; 7 mantissa</text><text x="74" y="170" class="bitlegend">darkest = sign &#183; mid = exponent &#183; lightest = mantissa</text></svg></div>
+<p class="cap">Seven mantissa bits against ten is roughly an eightfold coarser step between
+representable values. Inference needs the precision, not the range, so the trade that makes
+bf16 the right default for training is the wrong one here.</p>
+</section>
+
+<section>
+<div class="col">
+<h2>What the accuracy metrics show</h2>
+<p>Recall@1 across every model and precision. The bars are the finding: within each model
+they are the same height. Read down the &Delta; column in the table and no precision choice
+looks like it matters.</p>
+</div>
+<div class="legend"><span><i class="sw" style="background:#3a6ea5"></i>fp32</span><span><i class="sw" style="background:#2e7d63"></i>fp16</span><span><i class="sw" style="background:#b4552f"></i>bf16</span></div>
+<div class="figure"><svg viewBox="0 0 720 300" role="img" aria-label="R@1 by model and precision"><line x1="52" y1="254.0" x2="708" y2="254.0" class="grid"/><text x="44" y="258.0" class="tick" text-anchor="end">0</text><line x1="52" y1="194.0" x2="708" y2="194.0" class="grid"/><text x="44" y="198.0" class="tick" text-anchor="end">3</text><line x1="52" y1="134.0" x2="708" y2="134.0" class="grid"/><text x="44" y="138.0" class="tick" text-anchor="end">6</text><line x1="52" y1="74.0" x2="708" y2="74.0" class="grid"/><text x="44" y="78.0" class="tick" text-anchor="end">9</text><line x1="52" y1="14.0" x2="708" y2="14.0" class="grid"/><text x="44" y="18.0" class="tick" text-anchor="end">12</text><rect x="70.9" y="136.8" width="34.5" height="117.2" fill="#3a6ea5"><title>ViT-B/32 fp32: 5.93%</title></rect><text x="88.2" y="130.8" class="barlabel" text-anchor="middle">5.93</text><rect x="113.0" y="135.5" width="34.5" height="118.5" fill="#2e7d63"><title>ViT-B/32 fp16: 5.99%</title></rect><text x="130.2" y="129.5" class="barlabel" text-anchor="middle">5.99</text><rect x="155.0" y="134.6" width="34.5" height="119.4" fill="#b4552f"><title>ViT-B/32 bf16: 6.04%</title></rect><text x="172.3" y="128.6" class="barlabel" text-anchor="middle">6.04</text><text x="134.0" y="274" class="axis" text-anchor="middle">ViT-B/32</text><rect x="234.9" y="94.4" width="34.5" height="159.6" fill="#3a6ea5"><title>ViT-B/16 fp32: 8.07%</title></rect><text x="252.2" y="88.4" class="barlabel" text-anchor="middle">8.07</text><rect x="277.0" y="93.8" width="34.5" height="160.2" fill="#2e7d63"><title>ViT-B/16 fp16: 8.11%</title></rect><text x="294.2" y="87.8" class="barlabel" text-anchor="middle">8.11</text><rect x="319.0" y="88.7" width="34.5" height="165.3" fill="#b4552f"><title>ViT-B/16 bf16: 8.37%</title></rect><text x="336.3" y="82.7" class="barlabel" text-anchor="middle">8.37</text><text x="298.0" y="274" class="axis" text-anchor="middle">ViT-B/16</text><rect x="398.9" y="54.0" width="34.5" height="200.0" fill="#3a6ea5"><title>ViT-L/14 fp32: 10.12%</title></rect><text x="416.2" y="48.0" class="barlabel" text-anchor="middle">10.12</text><rect x="441.0" y="54.6" width="34.5" height="199.4" fill="#2e7d63"><title>ViT-L/14 fp16: 10.09%</title></rect><text x="458.2" y="48.6" class="barlabel" text-anchor="middle">10.09</text><rect x="483.0" y="56.2" width="34.5" height="197.8" fill="#b4552f"><title>ViT-L/14 bf16: 10.01%</title></rect><text x="500.3" y="50.2" class="barlabel" text-anchor="middle">10.01</text><text x="462.0" y="274" class="axis" text-anchor="middle">ViT-L/14</text><rect x="562.9" y="157.4" width="34.5" height="96.6" fill="#3a6ea5"><title>RN50 fp32: 4.89%</title></rect><text x="580.2" y="151.4" class="barlabel" text-anchor="middle">4.89</text><rect x="605.0" y="158.3" width="34.5" height="95.7" fill="#2e7d63"><title>RN50 fp16: 4.84%</title></rect><text x="622.2" y="152.3" class="barlabel" text-anchor="middle">4.84</text><rect x="647.0" y="159.0" width="34.5" height="95.0" fill="#b4552f"><title>RN50 bf16: 4.81%</title></rect><text x="664.3" y="153.0" class="barlabel" text-anchor="middle">4.81</text><text x="626.0" y="274" class="axis" text-anchor="middle">RN50</text><line x1="52" y1="254" x2="708" y2="254" class="axisline"/></svg></div>
+<p class="cap">R@1 (%), zero-shot, 6,156 caption queries against a 3,074-image
+gallery. mAP, the more sensitive measure, tells the same story &mdash; see the table.</p>
+<div class="scroll panel" style="margin-top:20px">
+<table><thead><tr><th>Model</th><th>Precision</th><th>R@1</th><th>&Delta; R@1</th><th>R@5</th><th>R@10</th><th>mAP</th></tr></thead>
+<tbody><tr class="ref"><td>ViT-B/32</td><td class="dt" style="color:#3a6ea5">fp32</td><td>5.93</td><td>&mdash;</td><td>14.86</td><td>21.15</td><td>5.78</td></tr><tr class=""><td>ViT-B/32</td><td class="dt" style="color:#2e7d63">fp16</td><td>5.99</td><td>+0.06</td><td>14.90</td><td>21.22</td><td>5.78</td></tr><tr class=""><td>ViT-B/32</td><td class="dt" style="color:#b4552f">bf16</td><td>6.04</td><td>+0.11</td><td>15.11</td><td>21.30</td><td>5.83</td></tr><tr class="ref group-start"><td>ViT-B/16</td><td class="dt" style="color:#3a6ea5">fp32</td><td>8.07</td><td>&mdash;</td><td>19.92</td><td>27.29</td><td>8.30</td></tr><tr class=""><td>ViT-B/16</td><td class="dt" style="color:#2e7d63">fp16</td><td>8.11</td><td>+0.03</td><td>19.95</td><td>27.37</td><td>8.31</td></tr><tr class=""><td>ViT-B/16</td><td class="dt" style="color:#b4552f">bf16</td><td>8.37</td><td>+0.29</td><td>20.13</td><td>27.42</td><td>8.40</td></tr><tr class="ref group-start"><td>ViT-L/14</td><td class="dt" style="color:#3a6ea5">fp32</td><td>10.12</td><td>&mdash;</td><td>22.66</td><td>31.14</td><td>9.41</td></tr><tr class=""><td>ViT-L/14</td><td class="dt" style="color:#2e7d63">fp16</td><td>10.09</td><td>-0.03</td><td>22.66</td><td>31.19</td><td>9.41</td></tr><tr class=""><td>ViT-L/14</td><td class="dt" style="color:#b4552f">bf16</td><td>10.01</td><td>-0.11</td><td>22.82</td><td>30.99</td><td>9.44</td></tr><tr class="ref group-start"><td>RN50</td><td class="dt" style="color:#3a6ea5">fp32</td><td>4.89</td><td>&mdash;</td><td>13.35</td><td>18.68</td><td>5.22</td></tr><tr class=""><td>RN50</td><td class="dt" style="color:#2e7d63">fp16</td><td>4.84</td><td>-0.05</td><td>13.32</td><td>18.65</td><td>5.21</td></tr><tr class=""><td>RN50</td><td class="dt" style="color:#b4552f">bf16</td><td>4.81</td><td>-0.08</td><td>12.85</td><td>18.37</td><td>5.14</td></tr></tbody></table></div>
+</section>
+
+<section>
+<div class="col">
+<h2>What the precision bought</h2>
+<p>Accuracy against image-encoding throughput, with each model's three precisions joined.
+The dashed traces run flat: throughput roughly triples while accuracy holds. bf16 lands on
+top of fp16 &mdash; it is not the faster format, only the less exact one.</p>
+</div>
+<div class="legend"><span><i class="sw" style="background:#3a6ea5"></i>fp32</span><span><i class="sw" style="background:#2e7d63"></i>fp16</span><span><i class="sw" style="background:#b4552f"></i>bf16</span></div>
+<div class="figure"><svg viewBox="0 0 720 400" role="img" aria-label="R@1 (%) versus Image encoding throughput (images/s, batch fixed at 64)"><line x1="56" y1="346.0" x2="602" y2="346.0" class="grid"/><text x="48" y="350.0" class="tick" text-anchor="end">3.6</text><line x1="56" y1="264.0" x2="602" y2="264.0" class="grid"/><text x="48" y="268.0" class="tick" text-anchor="end">5.6</text><line x1="56" y1="182.0" x2="602" y2="182.0" class="grid"/><text x="48" y="186.0" class="tick" text-anchor="end">7.5</text><line x1="56" y1="100.0" x2="602" y2="100.0" class="grid"/><text x="48" y="104.0" class="tick" text-anchor="end">9.4</text><line x1="56" y1="18.0" x2="602" y2="18.0" class="grid"/><text x="48" y="22.0" class="tick" text-anchor="end">11.3</text><text x="56.0" y="366" class="tick" text-anchor="middle">0</text><text x="192.5" y="366" class="tick" text-anchor="middle">845</text><text x="329.0" y="366" class="tick" text-anchor="middle">1,691</text><text x="465.5" y="366" class="tick" text-anchor="middle">2,536</text><text x="602.0" y="366" class="tick" text-anchor="middle">3,381</text><polyline points="319.5,247.8 538.0,245.0 552.4,242.9" fill="none" class="trace"/><text x="563.4" y="246.9" class="pointlabel">ViT-B/32</text><polyline points="123.2,155.9 241.0,143.3 245.7,154.5" fill="none" class="trace"/><text x="256.7" y="158.5" class="pointlabel">ViT-B/16</text><polyline points="72.3,68.1 101.1,73.0 101.6,69.5" fill="none" class="trace"/><text x="112.6" y="73.5" class="pointlabel">ViT-L/14</text><polyline points="253.1,292.4 399.5,295.9 426.3,294.5" fill="none" class="trace"/><text x="437.3" y="298.5" class="pointlabel">RN50</text><circle cx="319.5" cy="247.8" r="5.5" fill="#3a6ea5" stroke="var(--surface)" stroke-width="1.5"><title>ViT-B/32 fp32: 1632 img/s, 5.93% R@1</title></circle><circle cx="538.0" cy="245.0" r="5.5" fill="#2e7d63" stroke="var(--surface)" stroke-width="1.5"><title>ViT-B/32 fp16: 2985 img/s, 5.99% R@1</title></circle><circle cx="552.4" cy="242.9" r="5.5" fill="#b4552f" stroke="var(--surface)" stroke-width="1.5"><title>ViT-B/32 bf16: 3074 img/s, 6.04% R@1</title></circle><circle cx="123.2" cy="155.9" r="5.5" fill="#3a6ea5" stroke="var(--surface)" stroke-width="1.5"><title>ViT-B/16 fp32: 416 img/s, 8.07% R@1</title></circle><circle cx="245.7" cy="154.5" r="5.5" fill="#2e7d63" stroke="var(--surface)" stroke-width="1.5"><title>ViT-B/16 fp16: 1175 img/s, 8.11% R@1</title></circle><circle cx="241.0" cy="143.3" r="5.5" fill="#b4552f" stroke="var(--surface)" stroke-width="1.5"><title>ViT-B/16 bf16: 1145 img/s, 8.37% R@1</title></circle><circle cx="72.3" cy="68.1" r="5.5" fill="#3a6ea5" stroke="var(--surface)" stroke-width="1.5"><title>ViT-L/14 fp32: 101 img/s, 10.12% R@1</title></circle><circle cx="101.6" cy="69.5" r="5.5" fill="#2e7d63" stroke="var(--surface)" stroke-width="1.5"><title>ViT-L/14 fp16: 282 img/s, 10.09% R@1</title></circle><circle cx="101.1" cy="73.0" r="5.5" fill="#b4552f" stroke="var(--surface)" stroke-width="1.5"><title>ViT-L/14 bf16: 279 img/s, 10.01% R@1</title></circle><circle cx="253.1" cy="292.4" r="5.5" fill="#3a6ea5" stroke="var(--surface)" stroke-width="1.5"><title>RN50 fp32: 1221 img/s, 4.89% R@1</title></circle><circle cx="426.3" cy="294.5" r="5.5" fill="#2e7d63" stroke="var(--surface)" stroke-width="1.5"><title>RN50 fp16: 2293 img/s, 4.84% R@1</title></circle><circle cx="399.5" cy="295.9" r="5.5" fill="#b4552f" stroke="var(--surface)" stroke-width="1.5"><title>RN50 bf16: 2127 img/s, 4.81% R@1</title></circle><line x1="56" y1="346" x2="602" y2="346" class="axisline"/><text x="329.0" y="390" class="axis" text-anchor="middle">Image encoding throughput (images/s, batch fixed at 64)</text><text x="13" y="182.0" class="axis" transform="rotate(-90 13 182.0)" text-anchor="middle">R@1 (%)</text></svg></div>
+<div class="scroll panel" style="margin-top:20px">
+<table><thead><tr><th>Model</th><th>Precision</th><th>Images/s</th><th>Speedup</th><th>Captions/s</th><th>Peak VRAM (MiB)</th><th>Weights (MiB)</th></tr></thead>
+<tbody><tr class="ref"><td>ViT-B/32</td><td class="dt" style="color:#3a6ea5">fp32</td><td>1632</td><td>1.00&#215;</td><td>2173</td><td>782</td><td>577</td></tr><tr class=""><td>ViT-B/32</td><td class="dt" style="color:#2e7d63">fp16</td><td>2985</td><td>1.83&#215;</td><td>5509</td><td>453</td><td>337</td></tr><tr class=""><td>ViT-B/32</td><td class="dt" style="color:#b4552f">bf16</td><td>3074</td><td>1.88&#215;</td><td>5390</td><td>459</td><td>337</td></tr><tr class="ref group-start"><td>ViT-B/16</td><td class="dt" style="color:#3a6ea5">fp32</td><td>416</td><td>1.00&#215;</td><td>2175</td><td>1,215</td><td>571</td></tr><tr class=""><td>ViT-B/16</td><td class="dt" style="color:#2e7d63">fp16</td><td>1175</td><td>2.83&#215;</td><td>5519</td><td>678</td><td>334</td></tr><tr class=""><td>ViT-B/16</td><td class="dt" style="color:#b4552f">bf16</td><td>1145</td><td>2.75&#215;</td><td>5416</td><td>678</td><td>334</td></tr><tr class="ref group-start"><td>ViT-L/14</td><td class="dt" style="color:#3a6ea5">fp32</td><td>101</td><td>1.00&#215;</td><td>1100</td><td>2,710</td><td>1,631</td></tr><tr class=""><td>ViT-L/14</td><td class="dt" style="color:#2e7d63">fp16</td><td>282</td><td>2.80&#215;</td><td>2974</td><td>1,442</td><td>889</td></tr><tr class=""><td>ViT-L/14</td><td class="dt" style="color:#b4552f">bf16</td><td>279</td><td>2.77&#215;</td><td>2973</td><td>1,442</td><td>889</td></tr><tr class="ref group-start"><td>RN50</td><td class="dt" style="color:#3a6ea5">fp32</td><td>1221</td><td>1.00&#215;</td><td>2186</td><td>1,130</td><td>389</td></tr><tr class=""><td>RN50</td><td class="dt" style="color:#2e7d63">fp16</td><td>2293</td><td>1.88&#215;</td><td>5523</td><td>620</td><td>243</td></tr><tr class=""><td>RN50</td><td class="dt" style="color:#b4552f">bf16</td><td>2127</td><td>1.74&#215;</td><td>5409</td><td>620</td><td>243</td></tr></tbody></table></div>
+</section>
+
+<section>
+<div class="col">
+<h2>How far the embeddings moved</h2>
+<p>Deviation of each embedding from its fp32 counterpart. fp16 sits near
+10<sup>&minus;6</sup>; bf16 sits two decades further right, exactly where three fewer
+mantissa bits put it.</p>
+</div>
+<h3>Image embeddings</h3>
+<div class="figure"><svg viewBox="0 0 720 328" role="img" aria-label="Embedding deviation from fp32 by model and precision"><line x1="150.0" y1="22" x2="150.0" y2="298" class="grid"/><text x="150.0" y="16" class="tick" text-anchor="middle">10<tspan dy="-4" font-size="8">-7</tspan></text><line x1="227.7" y1="22" x2="227.7" y2="298" class="grid"/><text x="227.7" y="16" class="tick" text-anchor="middle">10<tspan dy="-4" font-size="8">-6</tspan></text><line x1="305.3" y1="22" x2="305.3" y2="298" class="grid"/><text x="305.3" y="16" class="tick" text-anchor="middle">10<tspan dy="-4" font-size="8">-5</tspan></text><line x1="383.0" y1="22" x2="383.0" y2="298" class="grid"/><text x="383.0" y="16" class="tick" text-anchor="middle">10<tspan dy="-4" font-size="8">-4</tspan></text><line x1="460.7" y1="22" x2="460.7" y2="298" class="grid"/><text x="460.7" y="16" class="tick" text-anchor="middle">10<tspan dy="-4" font-size="8">-3</tspan></text><line x1="538.3" y1="22" x2="538.3" y2="298" class="grid"/><text x="538.3" y="16" class="tick" text-anchor="middle">10<tspan dy="-4" font-size="8">-2</tspan></text><line x1="616.0" y1="22" x2="616.0" y2="298" class="grid"/><text x="616.0" y="16" class="tick" text-anchor="middle">10<tspan dy="-4" font-size="8">-1</tspan></text><text x="138" y="44" class="rowlabel" text-anchor="end">ViT-B/32 <tspan fill="#2e7d63">fp16</tspan></text><line x1="192.0" y1="40" x2="496.3" y2="40" stroke="#2e7d63" stroke-opacity="0.4" stroke-width="1.5"/><rect x="237.2" y="34" width="25.6" height="12" fill="#2e7d63" fill-opacity="0.3" stroke="#2e7d63" stroke-opacity="0.7"/><line x1="249.6" y1="32" x2="249.6" y2="48" stroke="#2e7d63" stroke-width="2.5"><title>median 1.92e-06</title></line><text x="626" y="44" class="tick">worst 2.9e-03</text><text x="138" y="78" class="rowlabel" text-anchor="end">ViT-B/32 <tspan fill="#b4552f">bf16</tspan></text><line x1="350.2" y1="74" x2="516.6" y2="74" stroke="#b4552f" stroke-opacity="0.4" stroke-width="1.5"/><rect x="393.9" y="68" width="30.5" height="12" fill="#b4552f" fill-opacity="0.3" stroke="#b4552f" stroke-opacity="0.7"/><line x1="408.6" y1="66" x2="408.6" y2="82" stroke="#b4552f" stroke-width="2.5"><title>median 2.13e-04</title></line><text x="626" y="78" class="tick">worst 5.3e-03</text><text x="138" y="112" class="rowlabel" text-anchor="end">ViT-B/16 <tspan fill="#2e7d63">fp16</tspan></text><line x1="191.9" y1="108" x2="432.7" y2="108" stroke="#2e7d63" stroke-opacity="0.4" stroke-width="1.5"/><rect x="232.6" y="102" width="28.1" height="12" fill="#2e7d63" fill-opacity="0.3" stroke="#2e7d63" stroke-opacity="0.7"/><line x1="245.4" y1="100" x2="245.4" y2="116" stroke="#2e7d63" stroke-width="2.5"><title>median 1.69e-06</title></line><text x="626" y="112" class="tick">worst 4.4e-04</text><text x="138" y="146" class="rowlabel" text-anchor="end">ViT-B/16 <tspan fill="#b4552f">bf16</tspan></text><line x1="349.4" y1="142" x2="536.4" y2="142" stroke="#b4552f" stroke-opacity="0.4" stroke-width="1.5"/><rect x="397.6" y="136" width="36.1" height="12" fill="#b4552f" fill-opacity="0.3" stroke="#b4552f" stroke-opacity="0.7"/><line x1="415.6" y1="134" x2="415.6" y2="150" stroke="#b4552f" stroke-width="2.5"><title>median 2.63e-04</title></line><text x="626" y="146" class="tick">worst 9.4e-03</text><text x="138" y="180" class="rowlabel" text-anchor="end">ViT-L/14 <tspan fill="#2e7d63">fp16</tspan></text><line x1="207.1" y1="176" x2="421.5" y2="176" stroke="#2e7d63" stroke-opacity="0.4" stroke-width="1.5"/><rect x="257.6" y="170" width="40.2" height="12" fill="#2e7d63" fill-opacity="0.3" stroke="#2e7d63" stroke-opacity="0.7"/><line x1="277.2" y1="168" x2="277.2" y2="184" stroke="#2e7d63" stroke-width="2.5"><title>median 4.35e-06</title></line><text x="626" y="180" class="tick">worst 3.1e-04</text><text x="138" y="214" class="rowlabel" text-anchor="end">ViT-L/14 <tspan fill="#b4552f">bf16</tspan></text><line x1="349.8" y1="210" x2="529.6" y2="210" stroke="#b4552f" stroke-opacity="0.4" stroke-width="1.5"/><rect x="397.0" y="204" width="31.1" height="12" fill="#b4552f" fill-opacity="0.3" stroke="#b4552f" stroke-opacity="0.7"/><line x1="411.3" y1="202" x2="411.3" y2="218" stroke="#b4552f" stroke-width="2.5"><title>median 2.31e-04</title></line><text x="626" y="214" class="tick">worst 7.7e-03</text><text x="138" y="248" class="rowlabel" text-anchor="end">RN50 <tspan fill="#2e7d63">fp16</tspan></text><line x1="248.6" y1="244" x2="424.6" y2="244" stroke="#2e7d63" stroke-opacity="0.4" stroke-width="1.5"/><rect x="288.8" y="238" width="21.1" height="12" fill="#2e7d63" fill-opacity="0.3" stroke="#2e7d63" stroke-opacity="0.7"/><line x1="298.9" y1="236" x2="298.9" y2="252" stroke="#2e7d63" stroke-width="2.5"><title>median 8.27e-06</title></line><text x="626" y="248" class="tick">worst 3.4e-04</text><text x="138" y="282" class="rowlabel" text-anchor="end">RN50 <tspan fill="#b4552f">bf16</tspan></text><line x1="437.8" y1="278" x2="574.6" y2="278" stroke="#b4552f" stroke-opacity="0.4" stroke-width="1.5"/><rect x="473.5" y="272" width="25.1" height="12" fill="#b4552f" fill-opacity="0.3" stroke="#b4552f" stroke-opacity="0.7"/><line x1="485.3" y1="270" x2="485.3" y2="286" stroke="#b4552f" stroke-width="2.5"><title>median 2.07e-03</title></line><text x="626" y="282" class="tick">worst 2.9e-02</text><text x="383.0" y="320" class="axis" text-anchor="middle">1 &minus; cosine similarity against fp32 &#183; log scale &#183; further right is more drift</text></svg></div>
+<h3>Text embeddings</h3>
+<div class="figure"><svg viewBox="0 0 720 328" role="img" aria-label="Embedding deviation from fp32 by model and precision"><line x1="150.0" y1="22" x2="150.0" y2="298" class="grid"/><text x="150.0" y="16" class="tick" text-anchor="middle">10<tspan dy="-4" font-size="8">-7</tspan></text><line x1="266.5" y1="22" x2="266.5" y2="298" class="grid"/><text x="266.5" y="16" class="tick" text-anchor="middle">10<tspan dy="-4" font-size="8">-6</tspan></text><line x1="383.0" y1="22" x2="383.0" y2="298" class="grid"/><text x="383.0" y="16" class="tick" text-anchor="middle">10<tspan dy="-4" font-size="8">-5</tspan></text><line x1="499.5" y1="22" x2="499.5" y2="298" class="grid"/><text x="499.5" y="16" class="tick" text-anchor="middle">10<tspan dy="-4" font-size="8">-4</tspan></text><line x1="616.0" y1="22" x2="616.0" y2="298" class="grid"/><text x="616.0" y="16" class="tick" text-anchor="middle">10<tspan dy="-4" font-size="8">-3</tspan></text><text x="138" y="44" class="rowlabel" text-anchor="end">ViT-B/32 <tspan fill="#2e7d63">fp16</tspan></text><line x1="186.7" y1="40" x2="378.2" y2="40" stroke="#2e7d63" stroke-opacity="0.4" stroke-width="1.5"/><rect x="243.6" y="34" width="25.7" height="12" fill="#2e7d63" fill-opacity="0.3" stroke="#2e7d63" stroke-opacity="0.7"/><line x1="255.7" y1="32" x2="255.7" y2="48" stroke="#2e7d63" stroke-width="2.5"><title>median 8.07e-07</title></line><text x="626" y="44" class="tick">worst 9.1e-06</text><text x="138" y="78" class="rowlabel" text-anchor="end">ViT-B/32 <tspan fill="#b4552f">bf16</tspan></text><line x1="408.6" y1="74" x2="591.4" y2="74" stroke="#b4552f" stroke-opacity="0.4" stroke-width="1.5"/><rect x="461.5" y="68" width="27.2" height="12" fill="#b4552f" fill-opacity="0.3" stroke="#b4552f" stroke-opacity="0.7"/><line x1="474.4" y1="66" x2="474.4" y2="82" stroke="#b4552f" stroke-width="2.5"><title>median 6.09e-05</title></line><text x="626" y="78" class="tick">worst 6.2e-04</text><text x="138" y="112" class="rowlabel" text-anchor="end">ViT-B/16 <tspan fill="#2e7d63">fp16</tspan></text><line x1="187.3" y1="108" x2="353.8" y2="108" stroke="#2e7d63" stroke-opacity="0.4" stroke-width="1.5"/><rect x="232.1" y="102" width="20.5" height="12" fill="#2e7d63" fill-opacity="0.3" stroke="#2e7d63" stroke-opacity="0.7"/><line x1="242.1" y1="100" x2="242.1" y2="116" stroke="#2e7d63" stroke-width="2.5"><title>median 6.17e-07</title></line><text x="626" y="112" class="tick">worst 5.6e-06</text><text x="138" y="146" class="rowlabel" text-anchor="end">ViT-B/16 <tspan fill="#b4552f">bf16</tspan></text><line x1="403.1" y1="142" x2="561.5" y2="142" stroke="#b4552f" stroke-opacity="0.4" stroke-width="1.5"/><rect x="457.8" y="136" width="20.7" height="12" fill="#b4552f" fill-opacity="0.3" stroke="#b4552f" stroke-opacity="0.7"/><line x1="468.1" y1="134" x2="468.1" y2="150" stroke="#b4552f" stroke-width="2.5"><title>median 5.38e-05</title></line><text x="626" y="146" class="tick">worst 3.4e-04</text><text x="138" y="180" class="rowlabel" text-anchor="end">ViT-L/14 <tspan fill="#2e7d63">fp16</tspan></text><line x1="183.9" y1="176" x2="326.8" y2="176" stroke="#2e7d63" stroke-opacity="0.4" stroke-width="1.5"/><rect x="235.3" y="170" width="19.6" height="12" fill="#2e7d63" fill-opacity="0.3" stroke="#2e7d63" stroke-opacity="0.7"/><line x1="244.7" y1="168" x2="244.7" y2="184" stroke="#2e7d63" stroke-width="2.5"><title>median 6.50e-07</title></line><text x="626" y="180" class="tick">worst 3.3e-06</text><text x="138" y="214" class="rowlabel" text-anchor="end">ViT-L/14 <tspan fill="#b4552f">bf16</tspan></text><line x1="413.0" y1="210" x2="548.0" y2="210" stroke="#b4552f" stroke-opacity="0.4" stroke-width="1.5"/><rect x="456.8" y="204" width="19.2" height="12" fill="#b4552f" fill-opacity="0.3" stroke="#b4552f" stroke-opacity="0.7"/><line x1="465.7" y1="202" x2="465.7" y2="218" stroke="#b4552f" stroke-width="2.5"><title>median 5.13e-05</title></line><text x="626" y="214" class="tick">worst 2.6e-04</text><text x="138" y="248" class="rowlabel" text-anchor="end">RN50 <tspan fill="#2e7d63">fp16</tspan></text><line x1="198.4" y1="244" x2="373.4" y2="244" stroke="#2e7d63" stroke-opacity="0.4" stroke-width="1.5"/><rect x="266.9" y="238" width="25.4" height="12" fill="#2e7d63" fill-opacity="0.3" stroke="#2e7d63" stroke-opacity="0.7"/><line x1="278.9" y1="236" x2="278.9" y2="252" stroke="#2e7d63" stroke-width="2.5"><title>median 1.28e-06</title></line><text x="626" y="248" class="tick">worst 8.3e-06</text><text x="138" y="282" class="rowlabel" text-anchor="end">RN50 <tspan fill="#b4552f">bf16</tspan></text><line x1="423.4" y1="278" x2="615.2" y2="278" stroke="#b4552f" stroke-opacity="0.4" stroke-width="1.5"/><rect x="490.9" y="272" width="26.2" height="12" fill="#b4552f" fill-opacity="0.3" stroke="#b4552f" stroke-opacity="0.7"/><line x1="504.0" y1="270" x2="504.0" y2="286" stroke="#b4552f" stroke-width="2.5"><title>median 1.09e-04</title></line><text x="626" y="282" class="tick">worst 9.8e-04</text><text x="383.0" y="320" class="axis" text-anchor="middle">1 &minus; cosine similarity against fp32 &#183; log scale &#183; further right is more drift</text></svg></div>
+<p class="cap">Box spans p25&ndash;p75, the heavy line is the median, whiskers reach the extremes
+over all 3,074 image and 6,156 text embeddings.</p>
+</section>
+
+<section>
+<div class="col">
+<h2>Whether the ranking moved</h2>
+<p>Drift measures how far the vectors travelled. This measures whether a user would notice.
+Top-1 agreement is the share of caption queries that still retrieve the <em>same gallery
+image</em> as fp32 &mdash; not merely a correct one.</p>
+<p><strong>RN50 at bf16 changes the top result for 23% of queries</strong> while its R@1 moves -0.08 points.
+That gap is the case for measuring rank agreement directly: aggregate accuracy is a sum over
+queries, and reshuffling within it nets out.</p>
+</div>
+<div class="scroll panel">
+<table><thead><tr><th>Model</th><th>Precision</th><th>Top-1 agree (%)</th><th>Top-10 overlap (%)</th><th>Kendall &tau; mean</th><th>&tau; min</th><th>1&minus;cos img</th><th>1&minus;cos txt</th></tr></thead>
+<tbody><tr><td>ViT-B/32</td><td class="dt" style="color:#2e7d63">fp16</td><td class="barcell"><i class="bar" style="width:60px;background:#2e7d63"></i>99.07</td><td>99.27</td><td>0.9973</td><td>0.9958</td><td>3.63e-06</td><td>9.04e-07</td></tr><tr><td>ViT-B/32</td><td class="dt" style="color:#b4552f">bf16</td><td class="barcell"><i class="bar" style="width:40px;background:#b4552f"></i>89.44</td><td>93.07</td><td>0.9721</td><td>0.9564</td><td>2.92e-04</td><td>6.97e-05</td></tr><tr><td>ViT-B/16</td><td class="dt" style="color:#2e7d63">fp16</td><td class="barcell"><i class="bar" style="width:60px;background:#2e7d63"></i>99.04</td><td>99.26</td><td>0.9972</td><td>0.9958</td><td>2.98e-06</td><td>6.77e-07</td></tr><tr><td>ViT-B/16</td><td class="dt" style="color:#b4552f">bf16</td><td class="barcell"><i class="bar" style="width:38px;background:#b4552f"></i>88.52</td><td>92.88</td><td>0.9685</td><td>0.9498</td><td>3.82e-04</td><td>5.73e-05</td></tr><tr><td>ViT-L/14</td><td class="dt" style="color:#2e7d63">fp16</td><td class="barcell"><i class="bar" style="width:60px;background:#2e7d63"></i>98.90</td><td>98.95</td><td>0.9966</td><td>0.9945</td><td>7.38e-06</td><td>7.10e-07</td></tr><tr><td>ViT-L/14</td><td class="dt" style="color:#b4552f">bf16</td><td class="barcell"><i class="bar" style="width:41px;background:#b4552f"></i>89.91</td><td>92.33</td><td>0.9728</td><td>0.9530</td><td>3.27e-04</td><td>5.64e-05</td></tr><tr><td>RN50</td><td class="dt" style="color:#2e7d63">fp16</td><td class="barcell"><i class="bar" style="width:59px;background:#2e7d63"></i>98.77</td><td>98.71</td><td>0.9949</td><td>0.9923</td><td>1.02e-05</td><td>1.41e-06</td></tr><tr><td>RN50</td><td class="dt" style="color:#b4552f">bf16</td><td class="barcell"><i class="bar" style="width:14px;background:#b4552f"></i>76.87</td><td>83.46</td><td>0.9165</td><td>0.8749</td><td>2.64e-03</td><td>1.22e-04</td></tr></tbody></table></div>
+<p class="cap">Kendall &tau; is computed over the full gallery ranking for a fixed random sample
+of 500 queries.</p>
+</section>
+
+<section>
+<div class="col"><h2>How this was measured</h2></div>
+<div class="panel" style="margin-top:18px">
+<dl>
+<dt>Dataset</dt><dd>CUHK-PEDES <code>test</code> split &mdash; 3,074 gallery images, 6,156 caption queries, 1,000 identities</dd>
+<dt>Protocol</dt><dd>Every caption queries the full gallery; a hit is a person-<code>id</code> match, so other images of the same identity count</dd>
+<dt>Models</dt><dd>Zero-shot openai/CLIP, no CUHK-PEDES fine-tuning</dd>
+<dt>Precision</dt><dd>True weight casting via openai's <code>convert_weights</code> layer policy generalised over dtype &mdash; not <code>autocast</code>, which keeps fp32 master weights and would hide this drift. LayerNorm and the token embedding stay fp32 in every config, as upstream leaves them, so fp16 and bf16 convert an identical set of layers</dd>
+<dt>Baseline</dt><dd><code>clip.load()</code> returns fp16 weights on CUDA; the fp32 reference here comes from an explicit <code>model.float()</code></dd>
+<dt>Timing</dt><dd>CUDA-synchronised forward pass only, 3 warmup batches, median over full batches; batch size fixed at 64 image / 256 text across all precisions</dd>
+<dt>Truncation</dt><dd>15 of 6,156 captions exceed CLIP's 77-token context and are truncated &mdash; identically in every config</dd>
+<dt>Hardware</dt><dd>NVIDIA GeForce RTX 5070 Ti, torch 2.11.0+cu128</dd>
+<dt>Generated</dt><dd>2026-09-04 01:55:25 UTC &#183; tag <code>full</code></dd>
+</dl>
+</div>
+<p class="cap" style="margin-top:18px">Absolute recall is low by design. This is zero-shot CLIP with
+no fine-tuning, so the numbers sit far below fine-tuned specialists, which reach R@1 above 70% on
+this benchmark. The comparison here is precision against precision within a model, which that
+offset does not affect.</p>
+</section>
+
+</div>
