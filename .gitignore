@@ -224,3 +224,6 @@ results/embeddings/
 results/*.log
 results/**/*sanity*
 results/**/*smoke*
+
+# Local Claude Code worktrees and metadata
+.claude/
