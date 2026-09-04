@@ -73,13 +73,23 @@ metrics.
 
 ## Requirements
 
-Torch from the `cu128` index — the RTX 5070 Ti is Blackwell (sm_120) and older
-wheels will not run on it. `openai/CLIP` is installed from git; its
-`requirements.txt` leaves `torch` unpinned, so there is no conflict.
+Torch from the `cu128` index — one of the machines this runs on is an RTX
+5070 Ti (Blackwell, sm_120) and older wheels will not run on it. `openai/CLIP`
+is installed from git; its `requirements.txt` leaves `torch` unpinned, so there
+is no conflict.
 
-Dataset path defaults to `/mnt/data/lab_datasets/CUHK-PEDES`; override with
+Dataset path is auto-detected from a short candidate list and overridable with
 `CUHK_PEDES_ROOT`. Checkpoint cache defaults to `~/.cache/clip`; override with
 `CLIP_DOWNLOAD_ROOT`.
+
+## Hardware
+
+Committed results in `results/` were measured on an **RTX A6000 (48 GiB)**;
+`cuda_device` and `torch_version` are recorded per row in the metrics JSON.
+Retrieval accuracy is hardware-independent (fp32 rows reproduce to the second
+decimal across two GPUs), but throughput and the *speedup ratio* from precision
+are not — ViT-L/14 fp16 is 2.80x fp32 on an RTX 5070 Ti and 3.81x on the A6000.
+Never mix speed columns measured on different devices.
 
 ## Scope
 

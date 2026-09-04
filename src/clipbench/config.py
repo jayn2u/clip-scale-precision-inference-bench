@@ -5,7 +5,20 @@ import os
 from pathlib import Path
 
 # --- Dataset -----------------------------------------------------------------
-DATASET_ROOT = Path(os.environ.get("CUHK_PEDES_ROOT", "/mnt/data/lab_datasets/CUHK-PEDES"))
+_DATASET_CANDIDATES = (
+    "/mnt/data/lab_datasets/CUHK-PEDES",
+    "/data/jayn2u/lab_datasets/CUHK-PEDES",
+)
+
+
+def _default_dataset_root() -> str:
+    for candidate in _DATASET_CANDIDATES:
+        if Path(candidate, "reid_raw.json").exists():
+            return candidate
+    return _DATASET_CANDIDATES[0]
+
+
+DATASET_ROOT = Path(os.environ.get("CUHK_PEDES_ROOT") or _default_dataset_root())
 ANNOTATION_FILE = DATASET_ROOT / "reid_raw.json"
 IMAGE_ROOT = DATASET_ROOT / "imgs"
 SPLIT = "test"
