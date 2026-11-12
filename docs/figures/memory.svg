@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2320" height="1080" viewBox="0 0 1160 540" role="img">
+<title>Peak VRAM and weight size</title>
+<desc>Image peak VRAM, text peak VRAM, and parameter bytes by model and precision.</desc>
+<rect width="1160" height="540" fill="#ffffff"/>
+<text x="28.00" y="34.00" fill="#1b2433" font-size="20" font-weight="640" font-family="Inter, Helvetica, Arial, sans-serif" text-anchor="start">Peak VRAM and weight size</text>
+<text x="28.00" y="56.00" fill="#5c6b80" font-size="12.5" font-weight="400" font-family="Inter, Helvetica, Arial, sans-serif" text-anchor="start">MiB = bytes / 2^20  ·  peak is torch.cuda max allocated during that tower</text>
+<rect x="956.80" y="23.00" width="11.00" height="11.00" fill="#3a6ea5" fill-opacity="1" rx="2" stroke="none" stroke-width="0"/>
+<text x="972.80" y="32.00" fill="#1b2433" font-size="12.5" font-weight="400" font-family="Inter, Helvetica, Arial, sans-serif" text-anchor="start">fp32</text>
+<rect x="1015.20" y="23.00" width="11.00" height="11.00" fill="#2e7d63" fill-opacity="1" rx="2" stroke="none" stroke-width="0"/>
+<text x="1031.20" y="32.00" fill="#1b2433" font-size="12.5" font-weight="400" font-family="Inter, Helvetica, Arial, sans-serif" text-anchor="start">fp16</text>
+<rect x="1073.60" y="23.00" width="11.00" height="11.00" fill="#b4552f" fill-opacity="1" rx="2" stroke="none" stroke-width="0"/>
+<text x="1089.60" y="32.00" fill="#1b2433" font-size="12.5" font-weight="400" font-family="Inter, Helvetica, Arial, sans-serif" text-anchor="start">bf16</text>
+<text x="80.00" y="92.00" fill="#1b2433" font-size="13" font-weight="620" font-family="Inter, Helvetica, Arial, sans-serif" text-anchor="start">Image peak</text>
+<text x="34.00" y="278.00" fill="#5c6b80" font-size="12" font-weight="400" font-family="Inter, Helvetica, Arial, sans-serif" text-anchor="middle" transform="rotate(-90 34.00 278.00)">MiB</text>
+<line x1="80.00" y1="448.00" x2="380.00" y2="448.00" stroke="#e6edf5" stroke-opacity="1" stroke-width="1"/>
+<text x="72.00" y="452.00" fill="#5c6b80" font-size="11" font-weight="400" font-family="JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, monospace" text-anchor="end">0</text>
+<line x1="80.00" y1="363.00" x2="380.00" y2="363.00" stroke="#e6edf5" stroke-opacity="1" stroke-width="1"/>
+<text x="72.00" y="367.00" fill="#5c6b80" font-size="11" font-weight="400" font-family="JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, monospace" text-anchor="end">800</text>
+<line x1="80.00" y1="278.00" x2="380.00" y2="278.00" stroke="#e6edf5" stroke-opacity="1" stroke-width="1"/>
+<text x="72.00" y="282.00" fill="#5c6b80" font-size="11" font-weight="400" font-family="JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, monospace" text-anchor="end">1,600</text>
+<line x1="80.00" y1="193.00" x2="380.00" y2="193.00" stroke="#e6edf5" stroke-opacity="1" stroke-width="1"/>
+<text x="72.00" y="197.00" fill="#5c6b80" font-size="11" font-weight="400" font-family="JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, monospace" text-anchor="end">2,400</text>
+<line x1="80.00" y1="108.00" x2="380.00" y2="108.00" stroke="#e6edf5" stroke-opacity="1" stroke-width="1"/>
+<text x="72.00" y="112.00" fill="#5c6b80" font-size="11" font-weight="400" font-family="JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, monospace" text-anchor="end">3,200</text>
+<line x1="80.00" y1="448.00" x2="380.00" y2="448.00" stroke="#c5d0dc" stroke-opacity="1" stroke-width="1.2"/>
+<rect x="89.65" y="364.92" width="16.70" height="83.08" fill="#3a6ea5" fill-opacity="1" rx="0" stroke="none" stroke-width="0"/>
+<rect x="109.15" y="399.68" width="16.70" height="48.32" fill="#2e7d63" fill-opacity="1" rx="0" stroke="none" stroke-width="0"/>
+<rect x="128.65" y="399.36" width="16.70" height="48.64" fill="#b4552f" fill-opacity="1" rx="0" stroke="none" stroke-width="0"/>
+<text x="117.50" y="468.00" fill="#1b2433" font-size="12" font-weight="400" font-family="Inter, Helvetica, Arial, sans-serif" text-anchor="middle">ViT-B/32</text>
+<rect x="164.65" y="318.75" width="16.70" height="129.25" fill="#3a6ea5" fill-opacity="1" rx="0" stroke="none" stroke-width="0"/>
+<rect x="184.15" y="376.37" width="16.70" height="71.63" fill="#2e7d63" fill-opacity="1" rx="0" stroke="none" stroke-width="0"/>
+<rect x="203.65" y="376.43" width="16.70" height="71.57" fill="#b4552f" fill-opacity="1" rx="0" stroke="none" stroke-width="0"/>
+<text x="192.50" y="468.00" fill="#1b2433" font-size="12" font-weight="400" font-family="Inter, Helvetica, Arial, sans-serif" text-anchor="middle">ViT-B/16</text>
+<rect x="239.65" y="159.99" width="16.70" height="288.01" fill="#3a6ea5" fill-opacity="1" rx="0" stroke="none" stroke-width="0"/>
+<rect x="259.15" y="294.59" width="16.70" height="153.41" fill="#2e7d63" fill-opacity="1" rx="0" stroke="none" stroke-width="0"/>
+<rect x="278.65" y="294.59" width="16.70" height="153.41" fill="#b4552f" fill-opacity="1" rx="0" stroke="none" stroke-width="0"/>
+<text x="267.50" y="468.00" fill="#1b2433" font-size="12" font-weight="400" font-family="Inter, Helvetica, Arial, sans-serif" text-anchor="middle">ViT-L/14</text>
+<rect x="314.65" y="328.02" width="16.70" height="119.98" fill="#3a6ea5" fill-opacity="1" rx="0" stroke="none" stroke-width="0"/>
+<rect x="334.15" y="381.82" width="16.70" height="66.18" fill="#2e7d63" fill-opacity="1" rx="0" stroke="none" stroke-width="0"/>
+<rect x="353.65" y="381.82" width="16.70" height="66.18" fill="#b4552f" fill-opacity="1" rx="0" stroke="none" stroke-width="0"/>
+<text x="342.50" y="468.00" fill="#1b2433" font-size="12" font-weight="400" font-family="Inter, Helvetica, Arial, sans-serif" text-anchor="middle">RN50</text>
+<text x="450.00" y="92.00" fill="#1b2433" font-size="13" font-weight="620" font-family="Inter, Helvetica, Arial, sans-serif" text-anchor="start">Text peak</text>
+<text x="404.00" y="278.00" fill="#5c6b80" font-size="12" font-weight="400" font-family="Inter, Helvetica, Arial, sans-serif" text-anchor="middle" transform="rotate(-90 404.00 278.00)">MiB</text>
+<line x1="450.00" y1="448.00" x2="750.00" y2="448.00" stroke="#e6edf5" stroke-opacity="1" stroke-width="1"/>
+<text x="442.00" y="452.00" fill="#5c6b80" font-size="11" font-weight="400" font-family="JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, monospace" text-anchor="end">0</text>
+<line x1="450.00" y1="363.00" x2="750.00" y2="363.00" stroke="#e6edf5" stroke-opacity="1" stroke-width="1"/>
+<text x="442.00" y="367.00" fill="#5c6b80" font-size="11" font-weight="400" font-family="JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, monospace" text-anchor="end">400</text>
+<line x1="450.00" y1="278.00" x2="750.00" y2="278.00" stroke="#e6edf5" stroke-opacity="1" stroke-width="1"/>
+<text x="442.00" y="282.00" fill="#5c6b80" font-size="11" font-weight="400" font-family="JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, monospace" text-anchor="end">800</text>
+<line x1="450.00" y1="193.00" x2="750.00" y2="193.00" stroke="#e6edf5" stroke-opacity="1" stroke-width="1"/>
+<text x="442.00" y="197.00" fill="#5c6b80" font-size="11" font-weight="400" font-family="JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, monospace" text-anchor="end">1,200</text>
+<line x1="450.00" y1="108.00" x2="750.00" y2="108.00" stroke="#e6edf5" stroke-opacity="1" stroke-width="1"/>
+<text x="442.00" y="112.00" fill="#5c6b80" font-size="11" font-weight="400" font-family="JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, monospace" text-anchor="end">1,600</text>
+<line x1="450.00" y1="448.00" x2="750.00" y2="448.00" stroke="#c5d0dc" stroke-opacity="1" stroke-width="1.2"/>
+<rect x="459.65" y="190.65" width="16.70" height="257.35" fill="#3a6ea5" fill-opacity="1" rx="0" stroke="none" stroke-width="0"/>
+<rect x="479.15" y="304.40" width="16.70" height="143.60" fill="#2e7d63" fill-opacity="1" rx="0" stroke="none" stroke-width="0"/>
+<rect x="498.65" y="303.87" width="16.70" height="144.13" fill="#b4552f" fill-opacity="1" rx="0" stroke="none" stroke-width="0"/>
+<text x="487.50" y="468.00" fill="#1b2433" font-size="12" font-weight="400" font-family="Inter, Helvetica, Arial, sans-serif" text-anchor="middle">ViT-B/32</text>
+<rect x="534.65" y="191.99" width="16.70" height="256.01" fill="#3a6ea5" fill-opacity="1" rx="0" stroke="none" stroke-width="0"/>
+<rect x="554.15" y="304.84" width="16.70" height="143.16" fill="#2e7d63" fill-opacity="1" rx="0" stroke="none" stroke-width="0"/>
+<rect x="573.65" y="304.84" width="16.70" height="143.16" fill="#b4552f" fill-opacity="1" rx="0" stroke="none" stroke-width="0"/>
+<text x="562.50" y="468.00" fill="#1b2433" font-size="12" font-weight="400" font-family="Inter, Helvetica, Arial, sans-serif" text-anchor="middle">ViT-B/16</text>
+<rect x="609.65" y="-97.66" width="16.70" height="545.66" fill="#3a6ea5" fill-opacity="1" rx="0" stroke="none" stroke-width="0"/>
+<rect x="629.15" y="156.04" width="16.70" height="291.96" fill="#2e7d63" fill-opacity="1" rx="0" stroke="none" stroke-width="0"/>
+<rect x="648.65" y="156.04" width="16.70" height="291.96" fill="#b4552f" fill-opacity="1" rx="0" stroke="none" stroke-width="0"/>
+<text x="637.50" y="468.00" fill="#1b2433" font-size="12" font-weight="400" font-family="Inter, Helvetica, Arial, sans-serif" text-anchor="middle">ViT-L/14</text>
+<rect x="684.65" y="230.49" width="16.70" height="217.51" fill="#3a6ea5" fill-opacity="1" rx="0" stroke="none" stroke-width="0"/>
+<rect x="704.15" y="326.54" width="16.70" height="121.46" fill="#2e7d63" fill-opacity="1" rx="0" stroke="none" stroke-width="0"/>
+<rect x="723.65" y="326.54" width="16.70" height="121.46" fill="#b4552f" fill-opacity="1" rx="0" stroke="none" stroke-width="0"/>
+<text x="712.50" y="468.00" fill="#1b2433" font-size="12" font-weight="400" font-family="Inter, Helvetica, Arial, sans-serif" text-anchor="middle">RN50</text>
+<text x="820.00" y="92.00" fill="#1b2433" font-size="13" font-weight="620" font-family="Inter, Helvetica, Arial, sans-serif" text-anchor="start">Weights</text>
+<text x="774.00" y="278.00" fill="#5c6b80" font-size="12" font-weight="400" font-family="Inter, Helvetica, Arial, sans-serif" text-anchor="middle" transform="rotate(-90 774.00 278.00)">MiB</text>
+<line x1="820.00" y1="448.00" x2="1120.00" y2="448.00" stroke="#e6edf5" stroke-opacity="1" stroke-width="1"/>
+<text x="812.00" y="452.00" fill="#5c6b80" font-size="11" font-weight="400" font-family="JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, monospace" text-anchor="end">0</text>
+<line x1="820.00" y1="363.00" x2="1120.00" y2="363.00" stroke="#e6edf5" stroke-opacity="1" stroke-width="1"/>
+<text x="812.00" y="367.00" fill="#5c6b80" font-size="11" font-weight="400" font-family="JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, monospace" text-anchor="end">500</text>
+<line x1="820.00" y1="278.00" x2="1120.00" y2="278.00" stroke="#e6edf5" stroke-opacity="1" stroke-width="1"/>
+<text x="812.00" y="282.00" fill="#5c6b80" font-size="11" font-weight="400" font-family="JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, monospace" text-anchor="end">1,000</text>
+<line x1="820.00" y1="193.00" x2="1120.00" y2="193.00" stroke="#e6edf5" stroke-opacity="1" stroke-width="1"/>
+<text x="812.00" y="197.00" fill="#5c6b80" font-size="11" font-weight="400" font-family="JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, monospace" text-anchor="end">1,500</text>
+<line x1="820.00" y1="108.00" x2="1120.00" y2="108.00" stroke="#e6edf5" stroke-opacity="1" stroke-width="1"/>
+<text x="812.00" y="112.00" fill="#5c6b80" font-size="11" font-weight="400" font-family="JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, monospace" text-anchor="end">2,000</text>
+<line x1="820.00" y1="448.00" x2="1120.00" y2="448.00" stroke="#c5d0dc" stroke-opacity="1" stroke-width="1.2"/>
+<rect x="829.65" y="349.90" width="16.70" height="98.10" fill="#3a6ea5" fill-opacity="1" rx="0" stroke="none" stroke-width="0"/>
+<rect x="849.15" y="390.70" width="16.70" height="57.30" fill="#2e7d63" fill-opacity="1" rx="0" stroke="none" stroke-width="0"/>
+<rect x="868.65" y="390.70" width="16.70" height="57.30" fill="#b4552f" fill-opacity="1" rx="0" stroke="none" stroke-width="0"/>
+<text x="857.50" y="468.00" fill="#1b2433" font-size="12" font-weight="400" font-family="Inter, Helvetica, Arial, sans-serif" text-anchor="middle">ViT-B/32</text>
+<rect x="904.65" y="350.97" width="16.70" height="97.03" fill="#3a6ea5" fill-opacity="1" rx="0" stroke="none" stroke-width="0"/>
+<rect x="924.15" y="391.20" width="16.70" height="56.80" fill="#2e7d63" fill-opacity="1" rx="0" stroke="none" stroke-width="0"/>
+<rect x="943.65" y="391.20" width="16.70" height="56.80" fill="#b4552f" fill-opacity="1" rx="0" stroke="none" stroke-width="0"/>
+<text x="932.50" y="468.00" fill="#1b2433" font-size="12" font-weight="400" font-family="Inter, Helvetica, Arial, sans-serif" text-anchor="middle">ViT-B/16</text>
+<rect x="979.65" y="170.69" width="16.70" height="277.31" fill="#3a6ea5" fill-opacity="1" rx="0" stroke="none" stroke-width="0"/>
+<rect x="999.15" y="296.89" width="16.70" height="151.11" fill="#2e7d63" fill-opacity="1" rx="0" stroke="none" stroke-width="0"/>
+<rect x="1018.65" y="296.89" width="16.70" height="151.11" fill="#b4552f" fill-opacity="1" rx="0" stroke="none" stroke-width="0"/>
+<text x="1007.50" y="468.00" fill="#1b2433" font-size="12" font-weight="400" font-family="Inter, Helvetica, Arial, sans-serif" text-anchor="middle">ViT-L/14</text>
+<rect x="1054.65" y="381.85" width="16.70" height="66.15" fill="#3a6ea5" fill-opacity="1" rx="0" stroke="none" stroke-width="0"/>
+<rect x="1074.15" y="406.65" width="16.70" height="41.35" fill="#2e7d63" fill-opacity="1" rx="0" stroke="none" stroke-width="0"/>
+<rect x="1093.65" y="406.65" width="16.70" height="41.35" fill="#b4552f" fill-opacity="1" rx="0" stroke="none" stroke-width="0"/>
+<text x="1082.50" y="468.00" fill="#1b2433" font-size="12" font-weight="400" font-family="Inter, Helvetica, Arial, sans-serif" text-anchor="middle">RN50</text>
+<text x="28.00" y="524.00" fill="#5c6b80" font-size="11" font-weight="400" font-family="Inter, Helvetica, Arial, sans-serif" text-anchor="start">Source: results/metrics/results_full.json  ·  NVIDIA RTX A6000</text>
+</svg>

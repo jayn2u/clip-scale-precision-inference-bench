@@ -2,6 +2,116 @@
 
 This benchmark measures how OpenAI CLIP **model scale** and **weight precision** affect zero-shot text-to-image person retrieval. It uses the CUHK-PEDES test split and measures retrieval quality, throughput, GPU memory, numerical drift from fp32, and ranking changes.
 
+## Findings
+
+The charts and tables in this section are calculated from the committed full run, [`results/metrics/results_full.json`](results/metrics/results_full.json) (tag `full`, generated 2026-09-04), and from [`results/metrics/train_capacity_a6000.md`](results/metrics/train_capacity_a6000.md). Every zero-shot row was measured on an NVIDIA RTX A6000 with torch 2.11.0+cu128. [`scripts/plot_results.py`](scripts/plot_results.py) redraws the figures from those files. Throughput ratios belong to this GPU; see [Hardware and result comparability](#hardware-and-result-comparability).
+
+Casting each model from fp32 to fp16 or bf16 moves Recall@1 by at most 0.34 points. fp16 multiplies image-encoding throughput by 1.65× to 3.81× and stores the same weight bytes as bf16. The ranking does not follow the recall numbers: bf16 top-1 agreement with the fp32 ranking is 76.19% to 90.11%. RN50 at bf16 returns a different top image for 23.81% of queries, while its Recall@1 only falls from 4.89 to 4.78.
+
+### Retrieval quality
+
+![Recall@1 by CLIP model and precision on the CUHK-PEDES test split](docs/figures/recall_at_1.png)
+
+*Recall@1 on 6,156 caption queries. Within a model the three precisions are nearly the same height. The largest Recall@1 gap versus fp32 is +0.34 points (ViT-B/16, bf16). Scale separates the models: RN50 fp32 is 4.89 and ViT-L/14 fp32 is 10.12.*
+
+| Model | Precision | R@1 | Δ R@1 | R@5 | R@10 | mAP |
+| --- | --- | ---: | ---: | ---: | ---: | ---: |
+| ViT-B/32 | fp32 | 5.95 | — | 14.86 | 21.17 | 5.78 |
+| ViT-B/32 | fp16 | 5.99 | +0.05 | 14.86 | 21.15 | 5.79 |
+| ViT-B/32 | bf16 | 5.95 | +0.00 | 15.04 | 21.23 | 5.82 |
+| ViT-B/16 | fp32 | 8.07 | — | 19.92 | 27.29 | 8.30 |
+| ViT-B/16 | fp16 | 8.07 | +0.00 | 19.92 | 27.36 | 8.30 |
+| ViT-B/16 | bf16 | 8.41 | +0.34 | 20.09 | 27.50 | 8.40 |
+| ViT-L/14 | fp32 | 10.12 | — | 22.68 | 31.14 | 9.41 |
+| ViT-L/14 | fp16 | 10.07 | -0.05 | 22.64 | 31.12 | 9.40 |
+| ViT-L/14 | bf16 | 10.07 | -0.05 | 22.74 | 30.99 | 9.44 |
+| RN50 | fp32 | 4.89 | — | 13.40 | 18.71 | 5.22 |
+| RN50 | fp16 | 4.86 | -0.03 | 13.39 | 18.52 | 5.22 |
+| RN50 | bf16 | 4.78 | -0.11 | 12.80 | 18.27 | 5.13 |
+
+Δ is the difference from that model's fp32 row. Percentages are rounded to two decimal places from the JSON. The largest absolute change among R@1, R@5, R@10, and mAP is RN50 bf16 Recall@5, from 13.40 to 12.80. mAP moves by at most 0.10 points (ViT-B/16, bf16, 8.30 to 8.40).
+
+### Throughput and memory
+
+![Image and text encoding throughput by model and precision](docs/figures/throughput.png)
+
+*Image throughput at batch 64 and text throughput at batch 256, full batches only. fp16 image throughput is 1.65× fp32 for ViT-B/32 and 3.81× fp32 for ViT-L/14. fp16 and bf16 text throughput match on every model. On images, ViT-B/32 bf16 reaches 4,260 images/s against 2,546 for fp16.*
+
+![Peak VRAM and weight size by model and precision](docs/figures/memory.png)
+
+*MiB is bytes / 2^20. fp16 and bf16 use the same weight size in every model. ViT-L/14 drops from 1,631 MiB of weights and a 2,711 MiB image-encoding peak at fp32 to 889 MiB and 1,444 MiB. For ViT-B/32 the text tower sets the peak: 1,211 MiB against an image peak of 782 MiB at fp32.*
+
+| Model | Precision | Images/s | vs fp32 | Captions/s | Image MiB | Text MiB | Weights MiB |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| ViT-B/32 | fp32 | 1,541 | 1.00× | 2,075 | 782 | 1,211 | 577 |
+| ViT-B/32 | fp16 | 2,546 | 1.65× | 5,863 | 455 | 676 | 337 |
+| ViT-B/32 | bf16 | 4,260 | 2.76× | 5,952 | 458 | 678 | 337 |
+| ViT-B/16 | fp32 | 388 | 1.00× | 2,059 | 1,217 | 1,205 | 571 |
+| ViT-B/16 | fp16 | 1,293 | 3.34× | 5,836 | 674 | 674 | 334 |
+| ViT-B/16 | bf16 | 1,328 | 3.43× | 5,919 | 674 | 674 | 334 |
+| ViT-L/14 | fp32 | 90 | 1.00× | 1,038 | 2,711 | 2,568 | 1,631 |
+| ViT-L/14 | fp16 | 342 | 3.81× | 3,468 | 1,444 | 1,374 | 889 |
+| ViT-L/14 | bf16 | 348 | 3.87× | 3,480 | 1,444 | 1,374 | 889 |
+| RN50 | fp32 | 1,300 | 1.00× | 2,040 | 1,129 | 1,024 | 389 |
+| RN50 | fp16 | 2,404 | 1.85× | 5,807 | 623 | 572 | 243 |
+| RN50 | bf16 | 2,354 | 1.81× | 5,918 | 623 | 572 | 243 |
+
+Image MiB and Text MiB are the peak allocations recorded for that tower. The speedup column divides image throughput by the same model's fp32 image throughput.
+
+### Ranking agreement and embedding drift
+
+![Top-1 agreement with the fp32 ranking](docs/figures/rank_agreement.png)
+
+*Share of the 6,156 queries whose top gallery image still matches fp32. fp16 stays between 98.25% and 99.32%. bf16 is 88.86% to 90.11% on the ViTs and 76.19% on RN50.*
+
+![Distribution of embedding deviation from fp32](docs/figures/embedding_drift.png)
+
+*1 − cosine similarity against the fp32 embedding, on a log scale. The box is the 25th to 75th percentile, the bar is the median, and the whiskers reach the minimum and maximum. Image fp16 medians run from 1.07×10⁻⁶ to 8.09×10⁻⁶. Image bf16 medians run from 2.16×10⁻⁴ to 2.63×10⁻⁴ on the ViTs and sit at 2.06×10⁻³ on RN50. The furthest whisker is an RN50 bf16 image, at 3.00×10⁻². Mean text deviation is smaller than mean image deviation in every row.*
+
+| Model | Precision | Top-1 agree | Top-10 overlap | Kendall τ | τ min | 1−cos image | 1−cos text |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| ViT-B/32 | fp16 | 99.32 | 99.41 | 0.9980 | 0.9970 | 1.30e-06 | 9.42e-07 |
+| ViT-B/32 | bf16 | 90.11 | 93.12 | 0.9722 | 0.9575 | 2.95e-04 | 6.90e-05 |
+| ViT-B/16 | fp16 | 99.03 | 99.23 | 0.9971 | 0.9956 | 3.02e-06 | 6.91e-07 |
+| ViT-B/16 | bf16 | 88.86 | 92.66 | 0.9685 | 0.9502 | 3.83e-04 | 5.70e-05 |
+| ViT-L/14 | fp16 | 99.03 | 98.95 | 0.9967 | 0.9945 | 7.34e-06 | 7.06e-07 |
+| ViT-L/14 | bf16 | 89.72 | 92.28 | 0.9729 | 0.9528 | 3.28e-04 | 5.58e-05 |
+| RN50 | fp16 | 98.25 | 98.57 | 0.9950 | 0.9925 | 9.86e-06 | 1.40e-06 |
+| RN50 | bf16 | 76.19 | 83.22 | 0.9163 | 0.8738 | 2.65e-03 | 1.21e-04 |
+
+Top-1 agreement and top-10 overlap are percentages. Kendall τ is the mean over a fixed sample of 500 queries, and τ min is the lowest value in that sample. 1−cos is one minus the mean cosine similarity against the fp32 embeddings.
+
+### Fine-tuning capacity
+
+These numbers are not part of the zero-shot benchmark. They are synthetic full fine-tune steps on the same RTX A6000 (48 GiB), kept so a batch-size choice does not have to be re-measured by hand. The epoch column is 34,054 train images / batch × the measured step time.
+
+![Fine-tune peak memory and estimated epoch time versus batch size](docs/figures/finetune_capacity.png)
+
+*Peak allocated memory and the epoch estimate, with and without gradient checkpointing. Only rows published in the source file are drawn. ViT-L/14 without checkpointing reaches 43.11 GiB at batch 128 and is out of memory at batch 256. With checkpointing, batch 256 uses 12.68 GiB and an estimated 7.1 min per epoch, against 5.8 min for batch 128 without checkpointing. At batch 256, ViT-B/32 without checkpointing (12.55 GiB) and ViT-L/14 with checkpointing (12.68 GiB) land on the same point.*
+
+| model | batch | ckpt | peak VRAM | step | epoch |
+| --- | --- | --- | --- | --- | --- |
+| ViT-L/14 | 32 | off | 14.95 GiB | 396 ms | 7.0 min |
+| ViT-L/14 | 64 | off | 24.32 GiB | 704 ms | 6.2 min |
+| ViT-L/14 | 128 | off | 43.11 GiB | 1307 ms | 5.8 min |
+| ViT-L/14 | 256 | off | OOM | | |
+| ViT-L/14 | 32 | on | 8.03 GiB | 483 ms | 8.6 min |
+| ViT-L/14 | 64 | on | 8.05 GiB | 873 ms | 7.7 min |
+| ViT-L/14 | 128 | on | 9.01 GiB | 1634 ms | 7.2 min |
+| ViT-L/14 | 256 | on | 12.68 GiB | 3185 ms | 7.1 min |
+| ViT-L/14 | 512 | on | 20.06 GiB | 6320 ms | 7.0 min |
+| ViT-B/16 | 128 | off | 14.40 GiB | 395 ms | 1.8 min |
+| ViT-B/16 | 256 | off | 26.83 GiB | 747 ms | 1.7 min |
+| ViT-B/16 | 512 | off | OOM | | |
+| ViT-B/16 | 256 | on | 5.43 GiB | 938 ms | 2.1 min |
+| ViT-B/16 | 512 | on | 8.90 GiB | 1829 ms | 2.0 min |
+| ViT-B/32 | 256 | off | 12.55 GiB | 325 ms | 0.7 min |
+| ViT-B/32 | 512 | off | 22.99 GiB | 614 ms | 0.7 min |
+| ViT-B/32 | 256 | on | 3.26 GiB | 402 ms | 0.9 min |
+| ViT-B/32 | 512 | on | 4.75 GiB | 767 ms | 0.9 min |
+
+The source file says the rows omitted from this table are strictly dominated. They are not plotted, because their measurements are not in the file.
+
 ## Benchmark scope
 
 | Category | What is measured |
@@ -185,6 +295,8 @@ src/clipbench/
 ```
 
 Check `src/clipbench/config.py` first when changing benchmark settings. Adding a model or precision also requires reviewing model loading, input dtypes, and the report's colors and presentation.
+
+[`scripts/plot_results.py`](scripts/plot_results.py) reads the committed files under `results/metrics/` and writes the PNG charts in `docs/figures/`. It rasterizes each figure with headless Chrome. Re-run it after replacing a committed full-run result so the README figures stay tied to those files.
 
 ## Development guidelines
 
